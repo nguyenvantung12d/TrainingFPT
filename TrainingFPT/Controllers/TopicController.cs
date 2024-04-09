@@ -61,6 +61,11 @@ namespace TrainingFPT.Controllers
                             ViewBag.Error = "Vui lòng thêm chọn thêm file video hoặc FileAudio hoặc file Document";
                             return View(topic);
                         }
+                        if(topic.CouresId <= 0)
+                        {
+                            ViewBag.Error = "Vui lòng chọn khóa học course";
+                            return View(topic);
+                        }
                         string VideoFileName = string.Empty;
                         string AudioFileName = string.Empty;
                         string DocumentFileName = string.Empty;
@@ -150,9 +155,14 @@ namespace TrainingFPT.Controllers
         {
             try
             {
+                PopulateCategoryDropdown();
                 if (ModelState.IsValid)
                 {
-                    PopulateCategoryDropdown();
+                    if (topic.CouresId <= 0)
+                    {
+                        ViewBag.Error = "Vui lòng chọn khóa học course";
+                        return View(topic);
+                    }
                     var data = _dbContext.Topics.FirstOrDefault(m => m.Id == topic.Id);
                     if (data != null)
                     {
