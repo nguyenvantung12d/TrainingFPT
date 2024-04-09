@@ -1,0 +1,77 @@
+﻿@using TrainingFPT.DBContext;
+@model List<TopicsDBContext>;
+@{
+    ViewData["Title"] = "Topic Page";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h4 class="display-6">List Topic</h4>
+        <a class="btn btn-primary btn-sm" href="@Url.Action("Add","Topic")">Add Topic</a>
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <p class="mb-0">
+                    Find: <input type="text" name="SearchString" value="@ViewData["CuerrentFilter"]" />
+                    <button type="submit" class="btn btn-primary btn-sm mb-0">Search</button>
+                    <a asp-action="Index">Back to full list</a>
+                </p>
+            </div>
+        </form>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>COURSE</th>
+                <th>NAME</th>
+                <th>DESCRIPTION</th>
+                <th>VIDEOS</th>
+                <th>AUDIO</th>
+                <th>DOCUMENT FILE</th>
+                <th>STATUS</th>
+                <th>CREATED AT</th>
+                <th>UPDATED AT</th>
+                <th colspan="2" width="5%">ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.CourseName</td>
+                    <td>@item.NameTopic</td>
+                    <td>@item.Description</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Video))
+                        {
+                            <video class="img-fluid" controls><source type="video/mp4" src="/uploads/videos/@item.Video"></video>
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Audio))
+                        {
+                            <video class="img-fluid" controls><source type="audio/mpeg" src="/uploads/audio/@item.Audio"></video>
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.DocumentTopic))
+                        {
+                            <p>Document: <a href="/uploads/documents/@item.DocumentTopic" download>Download</a></p>
+                        }
+                    </td>
+                    <td>@item.Status</td>
+                    <td>@item.CreatedAt?.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@item.UpdatedAt?.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>
+                        <a class="btn btn-info btn-sm" href="@Url.Action("Update","Topic", new { id = @item.Id })">Edit</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger btn-sm" onclick="return confirm('You want to delete data?')" href="@Url.Action("Delete","Topic", new { id = @item.Id })">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

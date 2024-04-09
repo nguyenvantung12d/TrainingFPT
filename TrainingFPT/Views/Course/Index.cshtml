@@ -1,0 +1,98 @@
+﻿@using TrainingFPT.DBContext
+@model List<CourseDBContext>;
+@{
+    ViewData["Title"] = "Course page";
+    // co the code nhu trong controller
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+    bool statusAdd = Convert.ToBoolean(TempData["SaveStatus"]);
+    bool statusUpdate = Convert.ToBoolean(TempData["UpdateStatus"]);
+    var roleId = (int)ViewBag.RoleId;
+}
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="display-6">
+            List Course
+        </h3>
+        @if(roleId != 3)
+        {
+            <a class="btn btn-primary btn-sm" href="@Url.Action("Add","Course")"> Add Course </a>
+        }
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <p class="mb-0">
+                    Find by name : <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                    <button type="submit" class="btn btn-primary btn-sm mb-0">Search</button>
+                    <a asp-action="Index">Back to full list</a>
+                </p>
+            </div>
+        </form>
+        @if (TempData["UpdateStatus"] != null)
+        {
+            if (statusUpdate)
+            {
+                <div class="text-success my-2">Update successfully</div>
+            }
+            else
+            {
+                <div class="text-danger my-2">Update Failure</div>
+            }
+        }
+
+        @if (TempData["saveStatus"] != null)
+        {
+            if ((bool)TempData["saveStatus"])
+            {
+                <div class="text-success my-2">Add successfully</div>
+            }
+            else
+            {
+                <div class="text-danger my-2">Add Failure</div>
+            }
+        }
+
+        <table class="table">
+            <thead class="text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>CATEGORY</th>
+                    <th>AVATAR</th>
+                    <th>DESCRIPTION</th>
+                    <th>STATUS</th>
+                    <th>CREATED AT</th>
+                    <th>UPDATED AT</th>
+                    @if(roleId != 3)
+                    {
+                        <th colspan="2" width="5%">ACTION</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.NameCourse</td>
+                        <td>@item.CategoryName</td>
+                        <td style="display: flex; justify-content: center; align-items: center;">
+                            <img width="150" class="img-fluid" src="/uploads/images/@item.Image" />
+                        </td>
+                        <td>@item.Description</td>
+                        <td>@item.Status</td>
+                        <td>@item.CreatedAt</td>
+                        <td>@item.UpdatedAt</td>
+                        @if(roleId != 3)
+                        {
+                            <td>
+                                <a class="btn btn-info btn-sm" href="@Url.Action("Update","Course", new {id = @item.Id})">Edit</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger btn-sm" onclick="return confirm('You want to delete data?')" href="@Url.Action("Delete","Course", new {id = @item.Id})">Delete</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

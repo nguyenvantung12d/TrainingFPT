@@ -1,0 +1,85 @@
+﻿@using TrainingFPT.DBContext;
+@model TopicsDBContext;
+@{
+    ViewData["Title"] = "Update Topic";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<div class="row vh-100">
+    <div class="col-sm-12 col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Update Topic</h5>
+            </div>
+            <div class="card-body">
+                <form enctype="multipart/form-data" asp-action="Update" method="post" asp-validation-summary="All">
+                    <div class="row">
+                        @if (ViewBag.Error != null)
+                        {
+                            <div class="col-md-12">
+                                <p class="text-danger">@ViewBag.Error</p>
+                            </div>
+                        }
+                        <div class="col-sm-12 col-md-6">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label asp-for="NameTopic">NameTopic</label>
+                                <input asp-for="NameTopic" class="form-control" />
+                                <span class="text-danger" asp-validation-for="NameTopic"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CouresId">Course</label>
+                                <select asp-for="CouresId" class="form-control" asp-items="@(new SelectList(ViewBag.Stores, "Value", "Text"))">
+                                </select>
+                                <span class="text-danger" asp-validation-for="CouresId"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Description">Description</label>
+                                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Status" class="control-label"></label>
+                                <select class="form-control" asp-for="Status">
+                                    <option value="Active">Active</option>
+                                    <option value="Deactive">Deactive</option>
+                                </select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="FileVideo" class="control-label">File Video</label>
+                                <input type="file" class="form-control" asp-for="FileVideo" />
+                                <span class="text-danger" asp-validation-for="FileVideo"></span>
+                                @if (!string.IsNullOrEmpty(Model.Video))
+                                {
+                                    <video class="img-fluid mt-2" width="100" controls><source type="video/mp4" src="/uploads/videos/@Model.Video"></video>
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="FileAudio" class="control-label"></label>
+                                <input type="file" class="form-control" asp-for="FileAudio" />
+                                <span class="text-danger" asp-validation-for="FileAudio"></span>
+                                @if (!string.IsNullOrEmpty(Model.Audio))
+                                {
+                                    <video class="img-fluid mt-2" width="100" controls><source type="audio/mpeg" src="/uploads/audio/@Model.Audio"></video>
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="FileDocument" class="control-label"></label>
+                                <input type="file" class="form-control" asp-for="FileDocument" />
+                                <span class="text-danger" asp-validation-for="FileDocument"></span>
+                                @if (!string.IsNullOrEmpty(Model.DocumentTopic))
+                                {
+                                    <p class="mt-2">Document: <a href="/uploads/documents/@Model.DocumentTopic" download>Download</a></p>
+                                }
+                            </div>
+                        </div>
+                        <button class="btn btn-primary " type="submit">Save</button>
+                        <a class="btn btn-info" href="@Url.Action("Index","Topic")">Back to lists</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

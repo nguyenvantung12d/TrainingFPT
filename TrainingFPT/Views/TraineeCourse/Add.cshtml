@@ -1,0 +1,43 @@
+﻿@using TrainingFPT.Models;
+@model TraineeCourseDetail;
+
+@{
+    ViewData["Title"] = "Assign New Trainee To Course";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+<div class="row vh-100">
+    <div class="col-sm-12 col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5> Assign New Trainee To Course</h5>
+            </div>
+            <div class="card-body">
+                <form enctype="multipart/form-data" asp-action="Add">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Courseid">Course</label>
+                                <select asp-for="Courseid" class="form-control" asp-items="@(new SelectList(ViewBag.Stores, "Value", "Text"))">
+                                </select>
+                                <span class="text-danger" asp-validation-for="Courseid"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label asp-for="UserId">Trainee</label>
+                                <select asp-for="UserId" class="form-control" asp-items="@(new SelectList(ViewBag.Stores1, "Value", "Text"))">
+                                </select>
+                                <span class="text-danger" asp-validation-for="UserId"></span>
+                            </div>
+                        </div>
+
+                        <div class="sm-12 col-md-6">
+                            <button class="btn btn-primary my-3" type="submit"> Save </button>
+                            <a class="btn btn-info ms-3 mb-0" href="@Url.Action("Index","TraineeCourse")">Back to lists</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
